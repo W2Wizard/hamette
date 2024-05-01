@@ -7,15 +7,26 @@ import { db, lucia } from "$lib/server/auth";
 import type { Actions, PageServerLoad } from "./$types";
 import { fail, redirect } from "@sveltejs/kit";
 import type { User } from "@prisma/client";
+import { useRetryAfter } from "$lib/limiter.svelte";
 
 // ============================================================================
+
+const limiter = useRetryAfter({
+	IP: [10, "h"],
+	IPUA: [5, "m"]
+});
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) return redirect(302, "/");
 };
 
 export const actions: Actions = {
-	default: async ({ request, cookies }) => {
+	default: async (event) => {
+		const check = await limiter.check(event);
+		if (check.isLimited)
+			return fail(429, { message: `Ratelimited. Try again in ${check.retryAfter} seconds` });
+
+		const { request, cookies } = event;
 		const formData = await request.formData();
 		const email = formData.get("email")?.toString();
 		const password = formData.get("password")?.toString();

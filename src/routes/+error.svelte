@@ -16,15 +16,15 @@
 	</p>
 
 	{#if $page.status == 401}
-		<button href="/auth/signin">
+		<a href="/auth/signin">
 			Login
 			<Icon src={ArrowLeftOnRectangle} size="18px" />
-		</button>
+		</a>
 	{:else}
-		<button href="/">
+		<a href="/">
 			Go back
 			<Icon src={Home} size="18px" />
-		</button>
+		</a>
 	{/if}
 </div>
 
