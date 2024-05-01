@@ -12,60 +12,64 @@ import { resend } from "$lib/email/mail";
 
 // ============================================================================
 
-export const load: PageServerLoad = async ({ locals }) => {
-	if (locals.user) return redirect(302, "/");
-};
+// NOTE(W2): Disabled as we don't want a signup page for random users
+// Instead users are created manually by the admin via prisma studio or psql
+export const load: PageServerLoad = redirect(302, "/");
 
-export const actions: Actions = {
-	default: async ({ request, cookies }) => {
-		const formData = await request.formData();
-		const email = formData.get("email")?.toString();
-		const password = formData.get("password")?.toString();
+//export const load: PageServerLoad = async ({ locals }) => {
+//	if (locals.user) return redirect(302, "/");
+//};
 
-		if (!email || !/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
-			return fail(400, {
-				message: "Invalid email"
-			});
-		}
-		if (!password || password.length < 6 || password.length > 255) {
-			return fail(400, {
-				message: "Invalid password"
-			});
-		}
+//export const actions: Actions = {
+//	default: async ({ request, cookies }) => {
+//		const formData = await request.formData();
+//		const email = formData.get("email")?.toString();
+//		const password = formData.get("password")?.toString();
 
-		// Check if user already exists
-		console.log(db.filename);
-		const user = db
-			.prepare("SELECT * FROM user WHERE email = ?")
-			.get(email) as User | null;
-		if (user) {
-			return fail(400, {
-				message: "User with such email already exists"
-			});
-		}
+//		if (!email || !/^[\w-]+@([\w-]+\.)+[\w-]{2,4}$/.test(email)) {
+//			return fail(400, {
+//				message: "Invalid email"
+//			});
+//		}
+//		if (!password || password.length < 6 || password.length > 255) {
+//			return fail(400, {
+//				message: "Invalid password"
+//			});
+//		}
 
-		const userId = generateId(15);
-		const hashedPassword = await Bun.password.hash(password, "argon2id");
-		db.prepare("INSERT INTO user (id, email, hash) VALUES (?, ?, ?)", [
-			userId,
-			email,
-			hashedPassword
-		]).run();
+//		// Check if user already exists
+//		console.log(db.filename);
+//		const user = db
+//			.prepare("SELECT * FROM user WHERE email = ?")
+//			.get(email) as User | null;
+//		if (user) {
+//			return fail(400, {
+//				message: "User with such email already exists"
+//			});
+//		}
 
-		const session = await lucia.createSession(userId, {});
-		const cookie = lucia.createSessionCookie(session.id);
-		cookies.set(cookie.name, cookie.value, {
-			...cookie.attributes,
-			path: "/"
-		});
+//		const userId = generateId(15);
+//		const hashedPassword = await Bun.password.hash(password, "argon2id");
+//		db.prepare("INSERT INTO user (id, email, hash) VALUES (?, ?, ?)", [
+//			userId,
+//			email,
+//			hashedPassword
+//		]).run();
 
-		resend.emails.send({
-			from: "onboarding@resend.dev",
-			to: "main@w2wizard.dev",
-			subject: "Testing Resend",
-			html: "<p>Congrats on sending your <strong>first email</strong>!</p>"
-		});
+//		const session = await lucia.createSession(userId, {});
+//		const cookie = lucia.createSessionCookie(session.id);
+//		cookies.set(cookie.name, cookie.value, {
+//			...cookie.attributes,
+//			path: "/"
+//		});
 
-		redirect(302, "/auth/signin");
-	}
-};
+//		resend.emails.send({
+//			from: "onboarding@resend.dev",
+//			to: "main@w2wizard.dev",
+//			subject: "Testing Resend",
+//			html: "<p>Congrats on sending your <strong>first email</strong>!</p>"
+//		});
+
+//		redirect(302, "/auth/signin");
+//	}
+//};

@@ -30,6 +30,11 @@ export const actions: Actions = {
 	request: async ({ request }) => {
 		const formData = await request.formData();
 		const email = formData.get("email")?.toString();
+		const message = "If your email exists / is verified, you will receive a password reset link";
+
+		// Wait a random 125 - 250 ms to prevent timing attacks
+		await new Promise((resolve) => setTimeout(resolve, 125 + Math.random() * 125));
+
 		if (!email || email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
 			return fail(400, {
 				message: "Invalid email"
@@ -38,9 +43,7 @@ export const actions: Actions = {
 
 		const user = db.prepare("SELECT * FROM user WHERE email = ?").get(email) as User | null;
 		if (!user || !user.verified) {
-			return fail(400, {
-				message: "Invalid email"
-			});
+			return { message };
 		}
 
 		// TODO: Use custom email template
@@ -57,9 +60,7 @@ export const actions: Actions = {
 			`
 		});
 
-		return {
-			message: "If your email exists / is verified, you will receive a password reset link"
-		};
+		return { message };
 	},
 	// Reset the password
 	reset: async ({ request, cookies, url }) => {

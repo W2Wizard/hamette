@@ -19,6 +19,10 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const email = formData.get("email")?.toString();
 		const password = formData.get("password")?.toString();
+
+		// Wait a random 125 - 250 ms to prevent timing attacks
+		await new Promise((resolve) => setTimeout(resolve, 125 + Math.random() * 125));
+
 		if (!email || email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
 			return fail(400, {
 				message: "Invalid email"
