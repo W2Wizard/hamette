@@ -1,0 +1,68 @@
+/* Every interactive element */
+a,
+button,
+[role="button"],
+input,
+select,
+textarea,
+search {
+  outline: 2px solid transparent;
+
+  &:focus-visible {
+    outline-color: var(--wui-primary);
+  }
+}
+
+input {
+    font-size: 1rem;
+    padding: 0.25rem;
+    color: var(--wui-foreground);
+    box-shadow: var(--wui-box-shadow);
+    border-radius: var(--wui-radius);
+    border: 1px solid var(--wui-border);
+    background-color: var(--wui-shade-01);
+}
+
+button {
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--wui-foreground);
+    border: 1px solid var(--wui-border);
+    background-color: var(--wui-shade-01);
+    padding: 0.35rem;
+    white-space: nowrap;
+
+    display: inline-flex;
+    place-items: center;
+    width: fit-content;
+
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: normal;
+    user-select: none;
+    border-radius: calc(var(--wui-radius));
+
+    min-height: 1rem;
+    min-width: 1rem;
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    &:not(:disabled)[type="submit"] {
+        color: var(--wui-primary-fg);
+        background-color: var(--wui-primary);
+        &:hover {
+            background-color: var(--wui-secondary);
+        }
+    }
+
+    &:hover:not(:disabled) {
+        background-color: var(--wui-shade-02);
+    }
+
+    &:active:not(:disabled) {
+        background-color: var(--wui-shade-03);
+    }
+}

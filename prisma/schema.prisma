@@ -1,0 +1,89 @@
+// Docs: https://pris.ly/d/prisma-schema
+
+// Prisma specific
+//=============================================================================
+
+// We don't use this trash, simply because it's trash.
+// Instead we only use it for the type generation.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Auth
+//=============================================================================
+
+model Session {
+  id         String   @id
+  user_id    String
+  expires_at DateTime
+  user       User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
+}
+
+// Table to store the password reset token
+model ResetTokens {
+  id         String   @id
+  user_id    String
+  expires_at DateTime
+}
+
+// Table to store the email verification token
+model VerificationTokens {
+  id         Int      @id @default(autoincrement())
+  code       String
+  user_id    String   @unique
+  email      String
+  expires_at DateTime
+}
+
+// User
+//=============================================================================
+
+model User {
+  id         String   @id
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
+
+  email      String
+  verified   Boolean @default(false)
+  role       String  @default("user")
+  first_name String?
+  last_name  String?
+
+  hash     String
+  sessions Session[]
+}
+
+// General purpose models
+//=============================================================================
+
+model Person {
+  id           Int        @id @default(autoincrement())
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now()) @updatedAt
+
+  born_at      DateTime   @default(now())
+  died_at      DateTime?
+
+  first_name   String
+  middle_name  String?
+  last_name    String
+
+  parent_id    Int
+  parent       Parents    @relation("Children", fields: [parent_id], references: [id])
+}
+
+model Parents {
+  id           Int        @id @default(autoincrement())
+  
+  created_at   DateTime   @default(now())
+  updated_at   DateTime   @default(now()) @updatedAt
+
+  father_id    Int        @map("father_id")
+  mother_id    Int        @map("mother_id")
+  children     Person[]   @relation("Children")
+}

@@ -1,0 +1,3 @@
+-   [ ] ChartJS
+-   [ ] SvelteFlow for design stuff ?
+-   [ ] Show stats
