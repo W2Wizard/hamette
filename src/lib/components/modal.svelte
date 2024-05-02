@@ -51,7 +51,7 @@
 			cursor: pointer;
 			color: var(--wui-foreground);
 			padding: 4px;
-			border-radius: var(--br);
+			border-radius: var(--wui-radius);
 
 			&:hover {
 				background-color: var(--wui-shade-03);
@@ -60,7 +60,7 @@
 	}
 
 	dialog {
-        margin: 0;
+    margin: 0;
 		top: 50%;
 		left: 50%;
 		transform: translate(-50%, -50%);

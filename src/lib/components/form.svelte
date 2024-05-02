@@ -4,18 +4,13 @@
 	import type { ActionResult, SubmitFunction } from "@sveltejs/kit";
 	import type { HTMLFormAttributes } from "svelte/elements";
 
-    interface Props extends HTMLFormAttributes {
-        isLoading?: boolean;
-        onLoading?: (isLoading: boolean) => void;
-        onResult?: (result: ActionResult) => void;
-    };
+	interface Props extends HTMLFormAttributes {
+		isLoading?: boolean;
+		onLoading?: (isLoading: boolean) => void;
+		onResult?: (result: ActionResult) => void;
+	}
 
-	let {
-        isLoading,
-        onLoading,
-        onResult,
-        ...rest
-    }: Props = $props();
+	let { isLoading, onLoading, onResult, ...rest }: Props = $props();
 
 	export const onSubmit: SubmitFunction = () => {
 		onLoading?.((isLoading = true));

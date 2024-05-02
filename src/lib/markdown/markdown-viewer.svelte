@@ -1,14 +1,14 @@
 <script lang="ts">
-  import plugins from "./plugins";
-  import Markdown from "svelte-exmarkdown";
+	import plugins from "./plugins";
+	import Markdown from "svelte-exmarkdown";
 
-  interface Props {
-    md?: string;
-  }
+	interface Props {
+		md?: string;
+	}
 
-  let { md = $bindable("") }: Props = $props();
+	let { md = $bindable("") }: Props = $props();
 </script>
 
 <div class="markdown-render-body">
-  <Markdown {md} {plugins} />
+	<Markdown {md} {plugins} />
 </div>
