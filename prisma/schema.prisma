@@ -49,7 +49,7 @@ model User {
   updated_at DateTime @default(now()) @updatedAt
 
   email      String
-  verified   Boolean @default(false)
+  verified   Boolean @default(true)
   role       String  @default("user")
   first_name String?
   last_name  String?
@@ -62,28 +62,32 @@ model User {
 //=============================================================================
 
 model Person {
-  id           Int        @id @default(autoincrement())
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @default(now()) @updatedAt
+  id          Int       @id @default(autoincrement())
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now()) @updatedAt
+  born_at     DateTime  @default(now())
+  died_at     DateTime?
+  first_name  String
+  middle_name String?
+  last_name   String
+  gender      Boolean
 
-  born_at      DateTime   @default(now())
-  died_at      DateTime?
+  slug String @unique @default("unknown")
 
-  first_name   String
-  middle_name  String?
-  last_name    String
+  parent_id Int?
+  parent_of Family? @relation("ParentOfFamily", fields: [parent_id], references: [id])
 
-  parent_id    Int
-  parent       Parents    @relation("Children", fields: [parent_id], references: [id])
+  child_id Int?
+  child_of Family? @relation("ChildOfFamily", fields: [child_id], references: [id])
+
+  @@unique([born_at, died_at, first_name, middle_name, last_name])
 }
 
-model Parents {
-  id           Int        @id @default(autoincrement())
-  
-  created_at   DateTime   @default(now())
-  updated_at   DateTime   @default(now()) @updatedAt
+model Family {
+  id         Int      @id @unique @default(autoincrement())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now()) @updatedAt
 
-  father_id    Int        @map("father_id")
-  mother_id    Int        @map("mother_id")
-  children     Person[]   @relation("Children")
+  children Person[] @relation("ChildOfFamily")
+  parents  Person[] @relation("ParentOfFamily")
 }

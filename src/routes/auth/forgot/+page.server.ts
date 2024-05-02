@@ -9,6 +9,13 @@ import { RESET_TOKEN_LENGTH, createResetToken, db, lucia } from "$lib/server/aut
 import type { ResetTokens, User } from "@prisma/client";
 import { resend } from "$lib/email/mail";
 import { isWithinExpirationDate } from "oslo";
+import { useRetryAfter } from "$lib/limiter.svelte";
+import { ToastForm } from "$lib/utils";
+
+const limiter = useRetryAfter({
+	IP: [10, "h"],
+	IPUA: [5, "m"]
+});
 
 // ============================================================================
 
@@ -25,10 +32,16 @@ export const load: PageServerLoad = async ({ url }) => {
 	return { token: tokenQuery };
 };
 
+// ============================================================================
+
 export const actions: Actions = {
 	// Send the password reset link
-	request: async ({ request }) => {
-		const formData = await request.formData();
+	request: async (event) => {
+		const check = await limiter.check(event);
+		if (check.isLimited)
+			return fail(429, { message: `Ratelimited. Try again in ${check.retryAfter} seconds` });
+
+		const formData = await event.request.formData();
 		const email = formData.get("email")?.toString();
 		const message = "If your email exists / is verified, you will receive a password reset link";
 
@@ -36,11 +49,11 @@ export const actions: Actions = {
 		await new Promise((resolve) => setTimeout(resolve, 125 + Math.random() * 125));
 
 		if (!email || email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
-			return fail(400, { message });
+			return ToastForm.fail(400, message);
 
 		const user = db.prepare("SELECT * FROM user WHERE email = ?").get(email) as User | null;
 		if (!user || !user.verified) {
-			return { message };
+			return ToastForm.fail(400, message);
 		}
 
 		// TODO: Use custom email template
@@ -57,7 +70,7 @@ export const actions: Actions = {
 			`
 		});
 
-		return { message };
+		ToastForm.success(message);
 	},
 	// Reset the password
 	reset: async ({ request, cookies, url }) => {

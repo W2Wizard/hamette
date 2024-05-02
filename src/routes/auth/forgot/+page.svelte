@@ -7,13 +7,14 @@
 
 {#if data.token}
   <p>
-    Enter your new password and confirm it.
-    Make sure it's at least 6 characters long and please remember it this time.
+    Enter your new password and confirm it. Make sure it's at least 6 characters
+    long and please remember it this time.
   </p>
   <Form method="post" style="max-width: 400px;">
-    <input type="hidden" name="token" value={data.token} />
+    <input class="wui" type="hidden" name="token" value={data.token} />
     <label for="password">New Password</label>
     <input
+      class="wui"
       type="text"
       minlength={6}
       maxlength={255}
@@ -24,6 +25,7 @@
 
     <label for="password">Confirm Password</label>
     <input
+      class="wui"
       type="text"
       minlength={6}
       maxlength={255}
@@ -33,6 +35,7 @@
     />
     <hr />
     <button
+      class="wui"
       type="submit"
       formaction="/auth/forgot?/reset"
       style="width: 100%; justify-content: center;"
@@ -44,11 +47,12 @@
 {:else}
   <p>
     Please enter your email address to reset your password. We'll send you a
-	link to reset it.
+    link to reset it.
   </p>
   <Form method="post" style="max-width: 400px;">
     <label for="email">Email</label>
     <input
+      class="wui"
       type="email"
       name="email"
       id="email"
@@ -57,6 +61,7 @@
     />
     <hr />
     <button
+      class="wui"
       type="submit"
       formaction="/auth/forgot?/request"
       style="width: 100%; justify-content: center;"

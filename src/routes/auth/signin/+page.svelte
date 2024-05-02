@@ -6,6 +6,7 @@
 <Form method="post" style="max-width: 400px;">
   <label for="email">Email</label>
   <input
+    class="wui"
     type="email"
     name="email"
     id="email"
@@ -20,6 +21,7 @@
     </span>
   </label>
   <input
+    class="wui"
     type="password"
     minlength={6}
     maxlength={255}
@@ -28,7 +30,11 @@
   />
   <!--<a href="/auth/signup">Don't have an account?</a>-->
   <hr />
-  <button type="submit" style="width: 100%; justify-content: center;">
+  <button
+    class="wui"
+    type="submit"
+    style="width: 100%; justify-content: center;"
+  >
     Login
     <Icon src={ArrowRight} size="16px" solid />
   </button>

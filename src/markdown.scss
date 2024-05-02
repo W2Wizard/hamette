@@ -1,0 +1,131 @@
+.markdown-render-body {
+	--element-block: 0.5em;
+
+	-webkit-text-size-adjust: 100%;
+	margin: 0;
+	font-family:
+		-apple-system,
+		BlinkMacSystemFont,
+		Segoe UI,
+		Noto Sans,
+		Helvetica,
+		Arial,
+		sans-serif,
+		"Apple Color Emoji",
+		"Segoe UI Emoji";
+	font-size: 16px;
+	line-height: 1.5;
+	word-wrap: break-word;
+	text-rendering: optimizeLegibility;
+	text-shadow: unset;
+
+	& h1 {
+		font-size: 2em;
+		padding: unset;
+		border-bottom: 1px solid var(--wui-border);
+	}
+
+	& p {
+		line-height: 28px;
+	}
+
+	& blockquote {
+		margin-block: var(--element-block);
+		padding: 0 0.5em;
+		color: var(--wui-text-03);
+		border-left: 0.25em solid var(--wui-border);
+
+		& p {
+			font-style: italic;
+			margin: 0;
+		}
+	}
+
+	& strong {
+		font-weight: 600;
+	}
+
+	& a {
+		color: var(--wui-primary);
+		background-color: transparent;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	& img {
+		border-radius: var(--wui-radius);
+	}
+
+	& ul {
+		margin-block: var(--element-block);
+		list-style: disc;
+
+		& li {
+			/*margin-bottom: 0.5em;*/
+		}
+
+		/* If they have a li with an input set to checkbox */
+		&:has(li input[type="checkbox"]) {
+			list-style: none;
+			padding-inline-start: 0;
+		}
+	}
+
+	& pre:has(code[class*="language-"]) {
+		margin-block: var(--element-block);
+		display: grid;
+		background: var(--wui-shade-02);
+		border-radius: var(--wui-radius);
+		border: 1px solid var(--wui-border);
+		color: var(--wui-text-01);
+		font-size: 16px !important;
+
+		& > code[class*="language-"] {
+			background: inherit;
+			color: inherit;
+			border-radius: inherit;
+			padding: 16px;
+			max-width: min-content;
+			border: none;
+			margin: 0;
+		}
+	}
+
+	& code {
+		margin-block: var(--element-block);
+		padding: 4px;
+		background: var(--wui-shade-02);
+		border-radius: var(--wui-radius);
+		border: 1px solid var(--wui-border);
+		color: var(--wui-text-1);
+		font-size: 14px;
+	}
+
+	& table {
+		margin-block: var(--element-block);
+		border-collapse: collapse;
+
+		& th,
+		td {
+			padding: 6px 13px;
+			text-align: left;
+		}
+
+		& tr:nth-child(even) {
+			background-color: var(--wui-shade-02);
+		}
+
+		& th {
+			color: var(--wui-foreground);
+			background-color: var(--wui-shade-01);
+			border: 1px solid var(--wui-border);
+		}
+
+		& td {
+			border: 1px solid var(--wui-border);
+		}
+	}
+}

@@ -1,4 +1,7 @@
-/* Every interactive element */
+body {
+    background-color: var(--wui-background);
+}
+
 a,
 button,
 [role="button"],
@@ -13,7 +16,7 @@ search {
   }
 }
 
-input {
+input.wui {
     font-size: 1rem;
     padding: 0.25rem;
     color: var(--wui-foreground);
@@ -23,7 +26,7 @@ input {
     background-color: var(--wui-shade-01);
 }
 
-button {
+button.wui {
     cursor: pointer;
     font-size: 16px;
     color: var(--wui-foreground);
@@ -65,4 +68,10 @@ button {
     &:active:not(:disabled) {
         background-color: var(--wui-shade-03);
     }
+}
+
+label {
+    line-height: 1;
+    font-weight: 500;
+    font-size: .775rem;
 }

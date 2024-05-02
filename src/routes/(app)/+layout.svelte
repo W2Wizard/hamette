@@ -3,23 +3,37 @@
 </script>
 
 <header>
-	<h1>App</h1>
-	<nav>
-		<a href="/">Home</a>
-		<a href="/about">About</a>
+	<nav class="center">
+		<div>
+			<a class="wui" href="/">Home</a>
+			<a class="wui" href="/settings">Settings</a>
+		</div>
 		<form method="post" action="/auth/logout">
-			<button type="submit">Sign out</button>
+			<button class="wui" type="submit">Sign out</button>
 		</form>
 	</nav>
 </header>
 
-{@render children()}
+<main>
+	{@render children()}
+</main>
 
 <style lang="scss">
 	header {
-		background-color: #f0f0f0;
-		padding: 1rem;
+		display: grid;
+		background-color: var(--wui-header);
 		width: 100%;
+		height: var(--wui-header-height);
+		padding-inline: 1rem;
+	}
+	
+	main {
+		--main-padding: 1rem;
+		padding-inline: var(--main-padding);
+	}
+
+	nav {
+		justify-content: space-between;
 	}
 
 </style>

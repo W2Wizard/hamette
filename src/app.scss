@@ -1,4 +1,5 @@
 @import "./reset.scss";
+@import "./markdown.scss";
 @import "./components.scss";
 
 /* Font */
@@ -41,17 +42,21 @@
   --wui-text-05: hsl(240, 8%, 90%);
 
   --wui-radius: 0.5rem;
+  --wui-header-height: 4rem;
   --wui-border: hsl(240 5.9% 90%);
 
   --wui-primary: hsla(16, 100%, 50%, 1);
   --wui-secondary: hsla(16, 100%, 30%, 1);
-  --wui-primary-fg: hsl(0, 0%, 100%);
+  --wui-primary-fg: hsl(0, 0%, 96%);
 
+  --wui-header: var(--wui-background);
   --wui-outline: var(--wui-primary);
   --wui-foreground: var(--wui-text-01);
-  --wui-background: var(--wui-shade-01);
+  --wui-background: hsl(0, 0%, 100%);
   --wui-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
     0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+  color: var(--wui-foreground);
 }
 
 :root[data-theme="dark"] {
@@ -69,6 +74,7 @@
 
   --wui-background: #313131;
   --wui-border: hsl(240 3.7% 15.9%);
+
 }
 
 /* Shared */

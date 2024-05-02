@@ -16,12 +16,12 @@
 	</p>
 
 	{#if $page.status == 401}
-		<a href="/auth/signin">
+		<a class="wui" href="/auth/signin">
 			Login
 			<Icon src={ArrowLeftOnRectangle} size="18px" />
 		</a>
 	{:else}
-		<a href="/">
+		<a class="wui" href="/">
 			Go back
 			<Icon src={Home} size="18px" />
 		</a>
