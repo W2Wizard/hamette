@@ -1,5 +1,5 @@
 <script>
-  import Form from "$lib/form.svelte";
+  import Form from "$lib/components/form.svelte";
   import { ArrowUturnRight, Icon } from "svelte-hero-icons";
 
   let { data } = $props();

@@ -64,13 +64,17 @@ model User {
 model Person {
   id          Int       @id @default(autoincrement())
   created_at  DateTime  @default(now())
+
   updated_at  DateTime  @default(now()) @updatedAt
   born_at     DateTime  @default(now())
   died_at     DateTime?
+
   first_name  String
   middle_name String?
   last_name   String
+
   gender      Boolean
+  picture     String? // Base64 encoded image
 
   slug String @unique @default("unknown")
 

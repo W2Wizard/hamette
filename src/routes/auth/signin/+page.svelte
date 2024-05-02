@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Form from "$lib/form.svelte";
+  import Form from "$lib/components/form.svelte";
   import { ArrowRight, Icon } from "svelte-hero-icons";
 </script>
 
@@ -31,7 +31,7 @@
   <!--<a href="/auth/signup">Don't have an account?</a>-->
   <hr />
   <button
-    class="wui"
+    class="wui button"
     type="submit"
     style="width: 100%; justify-content: center;"
   >

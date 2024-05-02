@@ -46,7 +46,4 @@ export const gfmPlugin = exGFM;
 // ============================================================================
 
 /** A list of plugins to parse markdown. */
-export default [
-	gfmPlugin(),
-] as Plugin[];
-
+export default [gfmPlugin()] as Plugin[];

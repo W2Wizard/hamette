@@ -5,8 +5,8 @@
 // Modified from sveltekit-rate-limiter by Andreas Söderlund @ciscoheat
 // ============================================================================
 
-import TTLCache from '@isaacs/ttlcache';
-import type { RequestEvent } from '@sveltejs/kit';
+import TTLCache from "@isaacs/ttlcache";
+import type { RequestEvent } from "@sveltejs/kit";
 
 // Constants, types, ...
 // ============================================================================
@@ -14,7 +14,7 @@ import type { RequestEvent } from '@sveltejs/kit';
 /** A rate limit */
 export type Rate = [number, RateUnit];
 /** The unit for the rate limit */
-export type RateUnit = 's' | 'm' | 'h' | 'd';
+export type RateUnit = "s" | "m" | "h" | "d";
 
 interface CacheValue {
 	rate: number;
@@ -22,10 +22,10 @@ interface CacheValue {
 }
 
 const RateUnitMap: Record<RateUnit, number> = {
-	's': 1000,
-	'm': 60000,
-	'h': 60 * 60000,
-	'd': 24 * 60 * 60000
+	s: 1000,
+	m: 60000,
+	h: 60 * 60000,
+	d: 24 * 60 * 60000,
 };
 
 // Util Functions
@@ -43,13 +43,17 @@ function unitToSeconds(unit: RateUnit) {
 
 // Hashing function used to create a unqiue hash per agent
 function hashFunc(str: string) {
-	if (typeof Bun !== 'undefined') {
+	if (typeof Bun !== "undefined") {
 		return Bun.sha(str, "base64");
 	} else {
-		let hash = '';
-		crypto.subtle.digest('SHA-256', new TextEncoder().encode(str)).then((buffer) => {
-			hash = [...new Uint8Array(buffer)].map((b) => b.toString(16).padStart(2, '0')).join('');
-		});
+		let hash = "";
+		crypto.subtle
+			.digest("SHA-256", new TextEncoder().encode(str))
+			.then((buffer) => {
+				hash = [...new Uint8Array(buffer)]
+					.map((b) => b.toString(16).padStart(2, "0"))
+					.join("");
+			});
 		return hash;
 	}
 }
@@ -65,19 +69,23 @@ function hashFunc(str: string) {
  * @param maxItems The maximum number of items to store in the cache
  * @returns The rate limiter
  */
-export function useRetryAfter(options = {
-	/** IP e.g: CLI, cURL, etc */
-	IP: [15, 'h'] as Rate,
-	/** IP + User-Agent e.g: Firefox, Chrome, etc */
-	IPUA: [5, 'm'] as Rate
-}) {
-
-	const maxTTL = Math.max(RateUnitMap[options.IP[1]], RateUnitMap[options.IPUA[1]]);
+export function useRetryAfter(
+	options = {
+		/** IP e.g: CLI, cURL, etc */
+		IP: [15, "h"] as Rate,
+		/** IP + User-Agent e.g: Firefox, Chrome, etc */
+		IPUA: [5, "m"] as Rate,
+	},
+) {
+	const maxTTL = Math.max(
+		RateUnitMap[options.IP[1]],
+		RateUnitMap[options.IPUA[1]],
+	);
 	const cache = new RateLimiter(maxTTL, Infinity);
 
 	async function isLimited(event: RequestEvent) {
 		const ip = event.getClientAddress();
-		const ua = event.request.headers.get('user-agent');
+		const ua = event.request.headers.get("user-agent");
 		const hash = ua ? hashFunc(ip + ua) : hashFunc(ip);
 		const targetRate = ua ? options.IPUA : options.IP;
 		const cached = await cache.add(hash, targetRate[1]);
@@ -88,7 +96,7 @@ export function useRetryAfter(options = {
 		return {
 			hash: null,
 			limited: false,
-			unit: targetRate[1]
+			unit: targetRate[1],
 		};
 	}
 
@@ -99,7 +107,7 @@ export function useRetryAfter(options = {
 	 */
 	async function check(event: RequestEvent) {
 		const { hash, unit, limited } = await isLimited(event);
-		if (!limited) return { isLimited: false , retryAfter: 0 };
+		if (!limited) return { isLimited: false, retryAfter: 0 };
 
 		// Was not limited before, buit is now
 		if (!hash) return { isLimited: true, retryAfter: unitToSeconds(unit) };
@@ -107,12 +115,14 @@ export function useRetryAfter(options = {
 		const cached = await cache.add(hash, unit);
 		return {
 			isLimited: true,
-			retryAfter: toSeconds(cached.retryAfter - Date.now())
+			retryAfter: toSeconds(cached.retryAfter - Date.now()),
 		};
 	}
 
 	return {
-		get cache() { return cache; },
+		get cache() {
+			return cache;
+		},
 		check,
 	};
 }
@@ -127,7 +137,7 @@ class RateLimiter {
 		this.cache = new TTLCache({
 			ttl: maxTTL,
 			max: maxItems,
-			noUpdateTTL: true
+			noUpdateTTL: true,
 		});
 	}
 
@@ -142,11 +152,11 @@ class RateLimiter {
 			return cacheValue;
 		}
 
-		const ttl = RateUnitMap[unit] ?? RateUnitMap['m'];
+		const ttl = RateUnitMap[unit] ?? RateUnitMap["m"];
 		const retryAfter = Date.now() + ttl;
 		const cacheValue: CacheValue = {
 			rate: 1,
-			retryAfter
+			retryAfter,
 		};
 
 		this.cache.set(hash, cacheValue, { ttl });

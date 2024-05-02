@@ -1,5 +1,5 @@
 body {
-    background-color: var(--wui-background);
+	background-color: var(--wui-background);
 }
 
 a,
@@ -9,69 +9,77 @@ input,
 select,
 textarea,
 search {
-  outline: 2px solid transparent;
+	outline: 2px solid transparent;
 
-  &:focus-visible {
-    outline-color: var(--wui-primary);
-  }
+	&:focus-visible {
+		outline-color: var(--wui-primary);
+	}
 }
 
 input.wui {
-    font-size: 1rem;
-    padding: 0.25rem;
-    color: var(--wui-foreground);
-    box-shadow: var(--wui-box-shadow);
-    border-radius: var(--wui-radius);
-    border: 1px solid var(--wui-border);
-    background-color: var(--wui-shade-01);
+	font-size: 1rem;
+	padding: 0.25rem;
+	color: var(--wui-foreground);
+	box-shadow: var(--wui-box-shadow);
+	border-radius: var(--wui-radius);
+	border: 1px solid var(--wui-border);
+	background-color: var(--wui-shade-01);
 }
 
-button.wui {
-    cursor: pointer;
-    font-size: 16px;
-    color: var(--wui-foreground);
-    border: 1px solid var(--wui-border);
-    background-color: var(--wui-shade-01);
-    padding: 0.35rem;
-    white-space: nowrap;
+.wui.button {
+	cursor: pointer;
+	font-size: 16px;
+	color: var(--wui-foreground);
+	border: 1px solid var(--wui-border);
+	background-color: var(--wui-shade-01);
+	padding: 0.35rem;
+	white-space: nowrap;
 
-    display: inline-flex;
-    place-items: center;
-    width: fit-content;
+	display: inline-flex;
+	place-items: center;
+	width: fit-content;
 
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    font-weight: normal;
-    user-select: none;
-    border-radius: calc(var(--wui-radius));
+	font-size: 0.875rem;
+	line-height: 1.25rem;
+	font-weight: normal;
+	user-select: none;
+	border-radius: calc(var(--wui-radius));
 
-    min-height: 1rem;
-    min-width: 1rem;
+	min-height: 1rem;
+	min-width: 1rem;
 
-    &:disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-    }
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
 
-    &:not(:disabled)[type="submit"] {
-        color: var(--wui-primary-fg);
-        background-color: var(--wui-primary);
-        &:hover {
-            background-color: var(--wui-secondary);
-        }
-    }
+	&:not(:disabled)[type="submit"] {
+		color: var(--wui-primary-fg);
+		background-color: var(--wui-primary);
+		&:hover {
+			background-color: var(--wui-secondary);
+		}
+	}
 
-    &:hover:not(:disabled) {
-        background-color: var(--wui-shade-02);
-    }
+	&:hover:not(:disabled) {
+		background-color: var(--wui-shade-02);
+	}
 
-    &:active:not(:disabled) {
-        background-color: var(--wui-shade-03);
-    }
+	&:active:not(:disabled) {
+		background-color: var(--wui-shade-03);
+	}
 }
 
 label {
-    line-height: 1;
-    font-weight: 500;
-    font-size: .775rem;
+	line-height: 1;
+	font-weight: 500;
+	font-size: 0.775rem;
+}
+
+hr {
+	border: none;
+	margin: 6px 0px;
+	border-bottom: 2px solid var(--wui-border);
+	border-left: 2px solid var(--wui-border);
+	border-radius: var(--wui-radius);
 }

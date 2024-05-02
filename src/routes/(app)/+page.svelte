@@ -3,6 +3,17 @@
   import "@xyflow/svelte/dist/style.css";
   import { writable } from "svelte/store";
   import Person from "$lib/nodes/person.svelte";
+    import { apiFetch } from "$lib/utils";
+
+
+
+  $effect(async () => {
+    const data = await apiFetch("/api/data");
+    console.log(data);
+
+    //const data = await httpFetch<{message: string}>("/api/data");
+    //console.log(data);
+  });
 
   const nodes = writable([
     {

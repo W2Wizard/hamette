@@ -5,7 +5,12 @@
 
 import { error, fail, redirect } from "@sveltejs/kit";
 import type { Actions, PageServerLoad } from "./$types";
-import { RESET_TOKEN_LENGTH, createResetToken, db, lucia } from "$lib/server/auth";
+import {
+	RESET_TOKEN_LENGTH,
+	createResetToken,
+	db,
+	lucia,
+} from "$lib/server/auth";
 import type { ResetTokens, User } from "@prisma/client";
 import { resend } from "$lib/email/mail";
 import { isWithinExpirationDate } from "oslo";
@@ -14,17 +19,22 @@ import { ToastForm } from "$lib/utils";
 
 const limiter = useRetryAfter({
 	IP: [10, "h"],
-	IPUA: [5, "m"]
+	IPUA: [5, "m"],
 });
 
 // ============================================================================
 
 export const load: PageServerLoad = async ({ url }) => {
 	const tokenQuery = url.searchParams.get("token");
-	if (!url.searchParams.has("token") || !tokenQuery || tokenQuery.length !== RESET_TOKEN_LENGTH)
+	if (
+		!url.searchParams.has("token") ||
+		!tokenQuery ||
+		tokenQuery.length !== RESET_TOKEN_LENGTH
+	)
 		return { token: null };
 
-	const token = db.query("SELECT * FROM ResetTokens WHERE id = ?")
+	const token = db
+		.query("SELECT * FROM ResetTokens WHERE id = ?")
 		.get(tokenQuery) as ResetTokens | null;
 	if (!token || !isWithinExpirationDate(new Date(token.expires_at))) {
 		error(400, "Invalid token");
@@ -39,19 +49,31 @@ export const actions: Actions = {
 	request: async (event) => {
 		const check = await limiter.check(event);
 		if (check.isLimited)
-			return fail(429, { message: `Ratelimited. Try again in ${check.retryAfter} seconds` });
+			return fail(429, {
+				message: `Ratelimited. Try again in ${check.retryAfter} seconds`,
+			});
 
 		const formData = await event.request.formData();
 		const email = formData.get("email")?.toString();
-		const message = "If your email exists / is verified, you will receive a password reset link";
+		const message =
+			"If your email exists / is verified, you will receive a password reset link";
 
 		// Wait a random 125 - 250 ms to prevent timing attacks
-		await new Promise((resolve) => setTimeout(resolve, 125 + Math.random() * 125));
+		await new Promise((resolve) =>
+			setTimeout(resolve, 125 + Math.random() * 125),
+		);
 
-		if (!email || email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+		if (
+			!email ||
+			email.length < 3 ||
+			email.length > 255 ||
+			!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+		)
 			return ToastForm.fail(400, message);
 
-		const user = db.prepare("SELECT * FROM user WHERE email = ?").get(email) as User | null;
+		const user = db
+			.prepare("SELECT * FROM user WHERE email = ?")
+			.get(email) as User | null;
 		if (!user || !user.verified) {
 			return ToastForm.fail(400, message);
 		}
@@ -67,7 +89,7 @@ export const actions: Actions = {
 			<p>Click the link below to reset your password</p>
 			<p>If you didn't request this, you can ignore this email, probably change your password</p>
 			<a href="${link}">Reset your password</a>
-			`
+			`,
 		});
 
 		ToastForm.success(message);
@@ -85,10 +107,10 @@ export const actions: Actions = {
 
 		// Verify the token
 		// TODO: Make a it a transaction
-		const token = db.query("SELECT * FROM ResetTokens WHERE id = ?")
+		const token = db
+			.query("SELECT * FROM ResetTokens WHERE id = ?")
 			.get(tokenQuery) as ResetTokens | null;
-		if (token)
-			db.query("DELETE FROM ResetTokens WHERE id = ?").get(tokenQuery);
+		if (token) db.query("DELETE FROM ResetTokens WHERE id = ?").get(tokenQuery);
 		if (!token || !isWithinExpirationDate(new Date(token.expires_at))) {
 			error(400, "Invalid token");
 		}
@@ -96,13 +118,16 @@ export const actions: Actions = {
 		// TODO: Compare the hashes to see if the password is the same?
 		await lucia.invalidateUserSessions(token.user_id);
 		const hashedPassword = await Bun.password.hash(password, "argon2id");
-		db.query("UPDATE user SET hash = ? WHERE id = ?").get(hashedPassword, token.user_id);
+		db.query("UPDATE user SET hash = ? WHERE id = ?").get(
+			hashedPassword,
+			token.user_id,
+		);
 
 		const session = await lucia.createSession(token.user_id, {});
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: "/",
-			...sessionCookie.attributes
+			...sessionCookie.attributes,
 		});
 
 		redirect(302, "/");

@@ -2,7 +2,7 @@
 
 # Assembly-Based Lib-C Recreation Project
 
-Welcome to the Assembly-Based Lib-C Recreation Project. This project is an ambitious endeavor to recreate the fundamental functions of the standard C library, libc, using assembly language. 
+Welcome to the Assembly-Based Lib-C Recreation Project. This project is an ambitious endeavor to recreate the fundamental functions of the standard C library, libc, using assembly language.
 
 The goal of this project is to deepen our understanding of low-level computing concepts and the inner workings of libc, a library that forms the core of many programs in Unix-like operating systems. By recreating libc functions in assembly, we will be working closer to the hardware, dealing with registers, memory management, and system calls directly.
 
@@ -12,12 +12,12 @@ We will start with basic functions, such as memory allocation and initialization
 
 Let's get started!
 
-
 ## Code Quality and Formatting
 
 Check for proper error code handling, meaningful error messages, and consistent error handling practices.
 
 ## Function 1: Initialization
+
 ### Did the user implement the initialization function?
 
 Users should have implemented an initialization function to set up the library.

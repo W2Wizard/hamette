@@ -20,7 +20,7 @@ export const VERIFICATION_CODE_LENGTH = 8;
 export const db = new Database("./prisma/dev.db");
 const adapter = new BunSQLiteAdapter(db, {
 	user: "user",
-	session: "session"
+	session: "session",
 });
 
 /** The main instance of Lucia. */
@@ -28,9 +28,9 @@ export const lucia = new Lucia(adapter, {
 	sessionCookie: {
 		attributes: {
 			secure: !dev,
-			sameSite: "strict"
-		}
-	}
+			sameSite: "strict",
+		},
+	},
 });
 
 // ============================================================================
@@ -46,11 +46,9 @@ export function createResetToken(userId: string) {
 	const expiresAt = createDate(new TimeSpan(2, "h"));
 
 	db.query("DELETE FROM ResetTokens WHERE user_id = ?").get(userId);
-	db.query("INSERT INTO ResetTokens (id, user_id, expires_at) VALUES (?, ?, ?)").get(
-		tokenId,
-		userId,
-		expiresAt.toISOString()
-	);
+	db.query(
+		"INSERT INTO ResetTokens (id, user_id, expires_at) VALUES (?, ?, ?)",
+	).get(tokenId, userId, expiresAt.toISOString());
 
 	return tokenId;
 }
@@ -64,12 +62,9 @@ export function createResetToken(userId: string) {
 export function createVerificationCode(userId: string, email: string) {
 	db.query("DELETE FROM VerificationTokens WHERE user_id = ?").get(userId);
 	const code = generateRandomString(VERIFICATION_CODE_LENGTH, alphabet("0-9"));
-	db.query("INSERT INTO VerificationTokens (user_id, email, code, expires_at) VALUES (?, ?, ?, ?)").get(
-		userId,
-		email,
-		code,
-		createDate(new TimeSpan(5, "m")).toISOString()
-	);
+	db.query(
+		"INSERT INTO VerificationTokens (user_id, email, code, expires_at) VALUES (?, ?, ?, ?)",
+	).get(userId, email, code, createDate(new TimeSpan(5, "m")).toISOString());
 
 	return code;
 }

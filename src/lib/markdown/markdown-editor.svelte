@@ -190,10 +190,10 @@
     width: 100%;
     height: 100%;
     outline: none;
-    color: var(--wui-foreground-color);
+    color: var(--wui-foreground);
     border-bottom-left-radius: var(--wui-radius);
     border-bottom-right-radius: var(--wui-radius);
-    border: 1px solid var(--wui-border-color);
+    border: 1px solid var(--wui-border);
     border-top: none;
     min-height: 100px;
   }
@@ -203,7 +203,7 @@
     flex-wrap: wrap;
     border-top-left-radius: calc(var(--wui-radius) - 1px);
     border-top-right-radius: calc(var(--wui-radius) - 1px);
-    border: 1px solid var(--wui-border-color);
+    border: 1px solid var(--wui-border);
     background: var(--wui-shade-02);
     justify-content: space-between;
   }
@@ -263,6 +263,8 @@
         cursor: pointer;
         outline: none;
         color: var(--wui-text-01);
+        height: 100%;
+
 
         &:hover {
           background: var(--wui-shade-03);
@@ -276,7 +278,6 @@
 
       & button.selected {
         border-bottom: none;
-        height: 100%;
         box-shadow: inset 0 -2px 0 var(--wui-primary);
       }
     }
@@ -286,12 +287,12 @@
     background: var(--wui-shade-01);
     border-bottom-left-radius: var(--wui-radius);
     border-bottom-right-radius: var(--wui-radius);
-    border: 1px solid var(--wui-border-color);
+    border: 1px solid var(--wui-border);
     border-top: none;
     padding: 16px;
     min-height: 100px;
     word-break: break-all;
     overflow-y: auto;
-    color: var(--wui-foreground-color);
+    color: var(--wui-foreground);
   }
 </style>

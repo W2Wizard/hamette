@@ -23,5 +23,5 @@ export const actions: Actions = {
 		await lucia.invalidateSession(locals.session.id);
 		cookies.delete(lucia.sessionCookieName, { path: "/" });
 		redirect(302, "/auth/signin");
-	}
+	},
 };

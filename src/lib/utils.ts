@@ -63,6 +63,19 @@ export async function useFileReader(file: File) {
 	});
 }
 
+export async function apiFetch<T = unknown>(route: string, init?: RequestInit) {
+	const response = await fetch(route, {
+		signal: AbortSignal.timeout(1000),
+		...init,
+	});
+
+	if (!response.ok) {
+		throw new Error(response.statusText);
+	}
+
+	return (await response.json()) as T;
+}
+
 /**
  * Wrapper functions for handling universal toasts by awaited forms.
  *
@@ -75,7 +88,11 @@ export namespace ToastForm {
 	 * @param message The message of the failure
 	 * @returns
 	 */
-	export function fail<T>(status: number, message: string, rest: T = undefined as T) {
+	export function fail<T>(
+		status: number,
+		message: string,
+		rest: T = undefined as T,
+	) {
 		return kitFail(status, { message, ...rest });
 	}
 

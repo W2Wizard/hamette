@@ -13,8 +13,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 	if (!sessionId) {
 		event.locals.user = null;
 		event.locals.session = null;
-		if (event.url.pathname.startsWith("/auth"))
-			return resolve(event);
+		if (event.url.pathname.startsWith("/auth")) return resolve(event);
 		return redirect(301, "/auth/signin");
 	}
 
@@ -23,14 +22,14 @@ export const handle: Handle = async ({ event, resolve }) => {
 		const sessionCookie = lucia.createSessionCookie(session.id);
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: "/",
-			...sessionCookie.attributes
+			...sessionCookie.attributes,
 		});
 	}
 	if (!session) {
 		const sessionCookie = lucia.createBlankSessionCookie();
 		event.cookies.set(sessionCookie.name, sessionCookie.value, {
 			path: "/",
-			...sessionCookie.attributes
+			...sessionCookie.attributes,
 		});
 	}
 	event.locals.user = user;

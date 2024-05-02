@@ -17,14 +17,9 @@
         ...rest
     }: Props = $props();
 
-	export const onSubmit: SubmitFunction = ({ cancel }) => {
+	export const onSubmit: SubmitFunction = () => {
 		onLoading?.((isLoading = true));
-		toast.loading("Loading...", {
-			action: {
-				label: "Cancel",
-				onClick: () => cancel(),
-			},
-		});
+		toast.loading("Loading...");
 
 		return async ({ result }) => {
 			onLoading?.((isLoading = false));

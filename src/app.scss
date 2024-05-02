@@ -4,92 +4,101 @@
 
 /* Font */
 @font-face {
-  font-family: Geist;
-  src: url("/Geist.woff2") format("woff2");
-  font-display: swap;
+	font-family: Geist;
+	src: url("/Geist.woff2") format("woff2");
+	font-display: swap;
 }
 
 @font-face {
-  font-family: BebasNeue;
-  src: url("/BebasNeue.ttf") format("ttf");
-  font-display: swap;
+	font-family: BebasNeue;
+	src: url("/BebasNeue.ttf") format("ttf");
+	font-display: swap;
 }
 
 /* Root */
 /* ========================================================================= */
 
 :root {
-  font-family:
-    Geist,
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    Roboto,
-    "Helvetica Neue",
-    Arial,
-    sans-serif;
+	font-family:
+		Geist,
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		Roboto,
+		"Helvetica Neue",
+		Arial,
+		sans-serif;
 
-  --wui-shade-01: hsl(0, 0%, 91%);
-  --wui-shade-02: hsl(0, 0%, 85%);
-  --wui-shade-03: hsl(0, 0%, 75%);
-  --wui-shade-04: hsl(0, 0%, 65%);
-  --wui-shade-05: hsl(0, 0%, 54%);
+	--wui-shade-01: hsl(0, 0%, 91%);
+	--wui-shade-02: hsl(0, 0%, 85%);
+	--wui-shade-03: hsl(0, 0%, 75%);
+	--wui-shade-04: hsl(0, 0%, 65%);
+	--wui-shade-05: hsl(0, 0%, 54%);
 
-  --wui-text-01: hsl(0, 0%, 13%);
-  --wui-text-02: hsl(0, 0%, 27%);
-  --wui-text-03: hsl(240, 8%, 44%);
-  --wui-text-04: hsl(240, 8%, 64%);
-  --wui-text-05: hsl(240, 8%, 90%);
+	--wui-text-01: hsl(0, 0%, 13%);
+	--wui-text-02: hsl(0, 0%, 27%);
+	--wui-text-03: hsl(240, 8%, 44%);
+	--wui-text-04: hsl(240, 8%, 64%);
+	--wui-text-05: hsl(240, 8%, 90%);
 
-  --wui-radius: 0.5rem;
-  --wui-header-height: 4rem;
-  --wui-border: hsl(240 5.9% 90%);
+	--wui-radius: 0.5rem;
+	--wui-header-height: 4rem;
+	--wui-border: hsl(240 5.9% 90%);
 
-  --wui-primary: hsla(16, 100%, 50%, 1);
-  --wui-secondary: hsla(16, 100%, 30%, 1);
-  --wui-primary-fg: hsl(0, 0%, 96%);
+	--wui-primary: hsla(16, 100%, 50%, 1);
+	--wui-secondary: hsla(16, 100%, 30%, 1);
+	--wui-primary-fg: hsl(0, 0%, 96%);
 
-  --wui-header: var(--wui-background);
-  --wui-outline: var(--wui-primary);
-  --wui-foreground: var(--wui-text-01);
-  --wui-background: hsl(0, 0%, 100%);
-  --wui-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
-    0 1px 2px -1px rgb(0 0 0 / 0.1);
+	--wui-header: var(--wui-background);
+	--wui-outline: var(--wui-primary);
+	--wui-foreground: var(--wui-text-01);
+	--wui-background: hsl(0, 0%, 100%);
+	--wui-box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1),
+		0 1px 2px -1px rgb(0 0 0 / 0.1);
 
-  color: var(--wui-foreground);
+	color: var(--wui-foreground);
 }
 
 :root[data-theme="dark"] {
-  --wui-shade-01: hsla(0, 0%, 12%, 1);
-  --wui-shade-02: hsla(0, 0%, 15%, 1);
-  --wui-shade-03: hsla(0, 0%, 20%, 1);
-  --wui-shade-04: hsla(0, 0%, 31%, 1);
-  --wui-shade-05: hsla(0, 0%, 37%, 1);
+	--wui-shade-01: hsla(0, 0%, 12%, 1);
+	--wui-shade-02: hsla(0, 0%, 15%, 1);
+	--wui-shade-03: hsla(0, 0%, 20%, 1);
+	--wui-shade-04: hsla(0, 0%, 31%, 1);
+	--wui-shade-05: hsla(0, 0%, 37%, 1);
 
-  --wui-text-01: hsl(0, 0%, 90%);
-  --wui-text-02: hsl(0, 0%, 80%);
-  --wui-text-03: hsl(0, 0%, 65%);
-  --wui-text-04: hsl(0, 0%, 45%);
-  --wui-text-05: hsl(0, 0%, 25%);
+	--wui-text-01: hsl(0, 0%, 90%);
+	--wui-text-02: hsl(0, 0%, 80%);
+	--wui-text-03: hsl(0, 0%, 65%);
+	--wui-text-04: hsl(0, 0%, 45%);
+	--wui-text-05: hsl(0, 0%, 25%);
 
-  --wui-background: #313131;
-  --wui-border: hsl(240 3.7% 15.9%);
-
+	--wui-background: #313131;
+	--wui-border: hsl(240 3.7% 15.9%);
 }
 
 /* Shared */
 /* ========================================================================= */
 
+html:has(dialog[open]) {
+	overflow: hidden;
+
+	&::backdrop {
+		pointer-events: none;
+		touch-action: none;
+		filter: blur(5px);
+	}
+}
+
 .center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .transition {
-  transition-property: color, background-color, border-color,
-    text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
-    backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 0.15s;
+	transition-property: color, background-color, border-color,
+		text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter,
+		backdrop-filter;
+	transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	transition-duration: 0.15s;
 }
