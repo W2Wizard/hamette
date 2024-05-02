@@ -35,11 +35,8 @@ export const actions: Actions = {
 		// Wait a random 125 - 250 ms to prevent timing attacks
 		await new Promise((resolve) => setTimeout(resolve, 125 + Math.random() * 125));
 
-		if (!email || email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-			return fail(400, {
-				message: "Invalid email"
-			});
-		}
+		if (!email || email.length < 3 || email.length > 255 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+			return fail(400, { message });
 
 		const user = db.prepare("SELECT * FROM user WHERE email = ?").get(email) as User | null;
 		if (!user || !user.verified) {
