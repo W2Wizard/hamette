@@ -89,6 +89,18 @@ html:has(dialog[open]) {
 	}
 }
 
+form .group {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0.5rem;
+
+	// SET width: -webkit-fill-available; for all children
+
+	& label > * {
+		width: 100%;
+	}
+}
+
 .center {
 	display: flex;
 	justify-content: center;

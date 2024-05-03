@@ -260,6 +260,7 @@
 				outline: none;
 				color: var(--wui-text-01);
 				height: 100%;
+				font-size: 14px;
 
 				&:hover {
 					background: var(--wui-shade-03);

@@ -6,92 +6,132 @@
 // We don't use this trash, simply because it's trash.
 // Instead we only use it for the type generation.
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
 }
 
 // Auth
 //=============================================================================
 
 model Session {
-  id         String   @id
-  user_id    String
-  expires_at DateTime
-  user       User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
+    id         String   @id
+    user_id    String
+    expires_at DateTime
+    user       User     @relation(references: [id], fields: [user_id], onDelete: Cascade)
 }
 
 // Table to store the password reset token
 model ResetTokens {
-  id         String   @id
-  user_id    String
-  expires_at DateTime
+    id         String   @id
+    user_id    String
+    expires_at DateTime
 }
 
 // Table to store the email verification token
 model VerificationTokens {
-  id         Int      @id @default(autoincrement())
-  code       String
-  user_id    String   @unique
-  email      String
-  expires_at DateTime
+    id         Int      @id @default(autoincrement())
+    code       String
+    user_id    String   @unique
+    email      String
+    expires_at DateTime
 }
 
 // User
 //=============================================================================
 
 model User {
-  id         String   @id
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+    id         String   @id
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt
 
-  email      String
-  verified   Boolean @default(true)
-  role       String  @default("user")
-  first_name String?
-  last_name  String?
+    email      String
+    verified   Boolean @default(true)
+    role       String  @default("user")
+    first_name String?
+    last_name  String?
 
-  hash     String
-  sessions Session[]
+    hash     String
+    sessions Session[]
 }
 
 // General purpose models
 //=============================================================================
 
+//model Person {
+//    id         Int      @id @default(autoincrement())
+//    created_at DateTime @default(now())
+//    updated_at DateTime @default(now()) @updatedAt
+
+//    born_at DateTime  @default(now())
+//    died_at DateTime?
+
+//    first_name  String
+//    middle_name String?
+//    last_name   String
+
+//    birth_location String?
+//    death_location String?
+
+//    gender     Boolean
+//    picture    String? // Base64 encoded image
+//    occupation String?
+//    bio        String?
+
+//    slug String @unique @default("unknown")
+
+//    @@unique([born_at, died_at, first_name, middle_name, last_name])
+//}
+
 model Person {
-  id          Int       @id @default(autoincrement())
-  created_at  DateTime  @default(now())
+    id         Int      @id @default(autoincrement())
+    created_at DateTime @default(now())
+    updated_at DateTime @default(now()) @updatedAt
 
-  updated_at  DateTime  @default(now()) @updatedAt
-  born_at     DateTime  @default(now())
-  died_at     DateTime?
+    //== Data ==//
 
-  first_name  String
-  middle_name String?
-  last_name   String
+    first_name  String
+    middle_name String?
+    last_name   String
 
-  gender      Boolean
-  picture     String? // Base64 encoded image
+    born_at DateTime  @default(now())
+    died_at DateTime?
 
-  slug String @unique @default("unknown")
+    age        Int? // Calculated field
+    male       Boolean @default(false)
+    picture    String? // Base64 encoded image
+    occupation String?
+    bio        String?
+    birthplace String?
 
-  parent_id Int?
-  parent_of Family? @relation("ParentOfFamily", fields: [parent_id], references: [id])
+    //== Relations ==//
 
-  child_id Int?
-  child_of Family? @relation("ChildOfFamily", fields: [child_id], references: [id])
+    // The person has the following marriages
+    as_wife    Marriage[] @relation("Wife")
+    as_husband Marriage[] @relation("Husband")
 
-  @@unique([born_at, died_at, first_name, middle_name, last_name])
+    // This person is a result of the following marriage
+    marriage_id Int?
+    child_of    Marriage? @relation("ChildOfMarriage", fields: [marriage_id], references: [id])
+
+    @@unique([first_name, middle_name, last_name, marriage_id])
+    @@map("person")
 }
 
-model Family {
-  id         Int      @id @unique @default(autoincrement())
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now()) @updatedAt
+model Marriage {
+    id Int @id @default(autoincrement())
 
-  children Person[] @relation("ChildOfFamily")
-  parents  Person[] @relation("ParentOfFamily")
+    husband_id Int
+    husband    Person @relation("Husband", fields: [husband_id], references: [id])
+
+    wife_id Int?
+    wife    Person? @relation("Wife", fields: [wife_id], references: [id])
+
+    children Person[] @relation("ChildOfMarriage")
+
+    @@unique([husband_id, wife_id])
+    @@map("marriages")
 }

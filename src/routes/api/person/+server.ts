@@ -3,12 +3,6 @@ import type { RequestHandler } from "./$types";
 import { db } from "$lib/server/auth.js";
 import type { Person } from "@prisma/client";
 
-export interface POST {
-	firstName: string;
-	lastName: string;
-	middleName: string | null;
-}
-
 export const GET: RequestHandler = async (event) => {
 	const people = db.prepare("SELECT * FROM Person").all() as Person[];
 
@@ -24,7 +18,6 @@ export const POST: RequestHandler = async (event) => {
 	//let usr: Person = {
 
 	//}
-
 
 	return new Response();
 };
