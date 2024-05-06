@@ -35,7 +35,7 @@
     />
     <hr />
     <button
-      class="wui"
+      class="wui button"
       type="submit"
       formaction="/auth/forgot?/reset"
       style="width: 100%; justify-content: center;"
@@ -61,7 +61,7 @@
     />
     <hr />
     <button
-      class="wui"
+      class="wui button"
       type="submit"
       formaction="/auth/forgot?/request"
       style="width: 100%; justify-content: center;"

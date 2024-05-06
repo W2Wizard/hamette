@@ -191,7 +191,7 @@
 		border-bottom-right-radius: var(--wui-radius);
 		border: 1px solid var(--wui-border);
 		border-top: none;
-		min-height: 100px;
+		min-height: 250px;
 	}
 
 	nav {

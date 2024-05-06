@@ -58,10 +58,11 @@
 			const head = family.person;
 			const headID = head.id.toString();
 			const position = { x: i * 200, y: i * 200 };
+			let k = 0;
+
 			addNode(head, position)
 
 			family.spouses.forEach((spouse, j) => {
-				let k = 0;
 				const person = spouse.person!;
 				const spouseID = person.id.toString();
 				const position2 = { x: position.x + j * 300 + 300, y: position.y };
@@ -69,7 +70,7 @@
 				addEdge(headID, spouseID, "relation");
 
 				spouse.children.forEach((child) => {
-					addNode(child, { x: position2.x + k * 300, y: position.y + 120 });
+					addNode(child, { x: position2.x + k * 150, y: position.y + 120 });
 					addEdge(headID, child.id.toString());
 					addEdge(spouseID, child.id.toString());
 					k++;

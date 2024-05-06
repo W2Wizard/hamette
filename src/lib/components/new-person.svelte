@@ -34,66 +34,98 @@
 </script>
 
 <Form method="post" action="/person">
-	<!--<img src="https://via.placeholder.com/150" alt="Avatar" style="border-radius: 50%; width: 150px; height: 150px; margin: 0 auto; display: block;" />-->
-	<div class="prof center">
-		<img
-			bind:this={ppimg}
-			src="https://via.placeholder.com/150"
-			width="150"
-			height="150"
-			alt="user avatar"
-		/>
-		<input
-			type="file"
-			title="Upload a profile picture (max 5MB, png, gif, jpeg)"
-			accept="image/png, image/gif, image/jpeg"
-			onchange={handleImagePreview}
-		/>
-	</div>
-
-	<div class="group">
-		<label for="first-name">
-			First Name<sub>*</sub>
-			<input
-				class="wui"
-				type="text"
-				name="first-name"
-				id="first-name"
-				required
+	<div class="center" style="gap: 8px;">
+		<div class="prof center">
+			<img
+				bind:this={ppimg}
+				src="https://via.placeholder.com/150"
+				width="150"
+				height="150"
+				alt="user avatar"
 			/>
-		</label>
+			<input
+				type="file"
+				title="Upload a profile picture (max 5MB, png, gif, jpeg)"
+				accept="image/png, image/gif, image/jpeg"
+				onchange={handleImagePreview}
+			/>
+		</div>
 
-		<label for="middle-name">
-			Middle Name
-			<input class="wui" type="text" name="middle-name" id="middle-name" />
-		</label>
+		<div class="group">
+			<label for="first-name">
+				First Name<sub>*</sub>
+				<input
+					class="wui"
+					type="text"
+					name="first-name"
+					id="first-name"
+					required
+				/>
+			</label>
 
-		<label for="last-name">
-			Last Name<sub>*</sub>
-			<input class="wui" type="text" name="last-name" id="last-name" required />
-		</label>
+			<label for="middle-name">
+				Middle Name
+				<input class="wui" type="text" name="middle-name" id="middle-name" />
+			</label>
 
-		<label for="born-on">
-			Born on<sub>*</sub>
-			<input class="wui" type="date" name="born-on" id="born-on" required />
-		</label>
+			<label for="last-name">
+				Last Name<sub>*</sub>
+				<input
+					class="wui"
+					type="text"
+					name="last-name"
+					id="last-name"
+					required
+				/>
+			</label>
 
-		<label for="died-on">
-			Died on
-			<input class="wui" type="date" name="died-on" id="died-on" max={Date.now().toString()} />
-		</label>
+			<label for="gender">
+				Gender<sub>*</sub>
+				<select id="gender" name="gender" class="wui">
+					<option value="Male">Male</option>
+					<option value="Female">Female</option>
+				</select>
+			</label>
 
-		<label for="gender">
-			Gender<sub>*</sub>
-			<select class="wui">
-				<option value="Male">Male</option>
-				<option value="Female">Female</option>
-			</select>
+			<label for="born-on">
+				Born on<sub>*</sub>
+				<input class="wui" type="date" name="born-on" id="born-on" required />
+			</label>
+
+			<label for="died-on">
+				Died on
+				<input
+					class="wui"
+					type="date"
+					name="died-on"
+					id="died-on"
+					max={Date.now().toString()}
+				/>
+			</label>
+
+			<label for="occupation">
+				Occupation
+				<input class="wui" type="text" name="occupation" id="occupation" />
+			</label>
+
+			<label for="birth-place">
+				Birth Place
+				<input
+					class="wui"
+					type="url"
+					name="birth-place"
+					id="birth-place"
+					pattern="https://.*"
+					title="Please enter a valid URL, e.g: OpenStreetMap URL"
+					placeholder="https://www.openstreetmap.org/#map=16/52.4809/4.9723&layers=N"
+				/>
+			</label>
+		</div>
 	</div>
 
+	<hr />
 	<label for="notes">Notes</label>
 	<MarkdownEditor class="wui" name="notes" id="notes" />
-	<hr />
 	<button
 		class="wui button"
 		type="submit"
@@ -111,7 +143,7 @@
 		gap: 8px;
 
 		& img {
-			border-radius: 50%;
+			border-radius: var(--wui-radius);
 			height: var(--height);
 			width: var(--width);
 			pointer-events: none;
@@ -123,8 +155,14 @@
 			color: transparent;
 			width: var(--width);
 
+			&:hover {
+				&::file-selector-button {
+					background-color: var(--wui-shade-02);
+				}
+			}
+
 			&::file-selector-button {
-				border: 2px solid var(--wui-border);
+				border: 1px solid var(--wui-border);
 				border-radius: var(--wui-radius);
 				background-color: var(--wui-shade-01);
 				padding: 8px;
@@ -132,10 +170,6 @@
 				margin: 0;
 				width: var(--width);
 				color: var(--wui-foreground);
-
-				&:hover {
-					background-color: var(--wui-shade-02);
-				}
 			}
 		}
 	}
