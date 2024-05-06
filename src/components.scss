@@ -16,7 +16,7 @@ search {
 	}
 }
 
-input.wui {
+input.wui, select.wui, textarea.wui {
 	font-size: 1rem;
 	padding: 0.25rem;
 	color: var(--wui-foreground);
@@ -24,6 +24,10 @@ input.wui {
 	border-radius: var(--wui-radius);
 	border: 1px solid var(--wui-border);
 	background-color: var(--wui-shade-01);
+
+	&:is(select) {
+		padding-inline: 0.5rem;
+	}
 }
 
 .wui.button {

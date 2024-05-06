@@ -71,7 +71,7 @@
 		box-shadow: var(--wui-box-shadow);
 		border-radius: var(--wui-radius);
 		padding: 15px;
-        width: 32rem;
+    width: 42rem;
 
 		&[open] {
 			animation: slidein 0.35s ease-in-out;

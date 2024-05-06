@@ -63,8 +63,8 @@ export async function useFileReader(file: File) {
 	});
 }
 
-export async function apiFetch<T = unknown>(route: string, init?: RequestInit) {
-	const response = await fetch(route, {
+export async function apiFetch<T = unknown>(route: string, init: RequestInit & { fetch: typeof fetch }) {
+	const response = await init.fetch(route, {
 		signal: AbortSignal.timeout(1000),
 		...init,
 	});

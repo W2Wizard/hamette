@@ -3,6 +3,7 @@
 // See README in the root project for more information.
 // ============================================================================
 
+import rehypeRaw from "rehype-raw"
 import { gfmPlugin as exGFM } from "svelte-exmarkdown/gfm";
 import type { Plugin } from "svelte-exmarkdown/types";
 
@@ -17,33 +18,19 @@ import type { Plugin } from "svelte-exmarkdown/types";
  */
 export const gfmPlugin = exGFM;
 
-// Find and replace keywords in the rubric
-
 /**
- * Parse the markdown file as a NXDM-Rubric
- * NXDM Rubric should be designed with a spec in mind atm, we yolo it.
- *
- * # Did user do X?
- * Users should have done xyz la la la bla bla bla
- * <Toggle/>
- *
- * <Decision>
- * 	<Pass />
- *  <MemoryLeak />
- *  <Failed Compile />
- * </Decision>
- * @returns
+ * A plugin to parse html stuff in markdown.
+ * @param options - Options to pass to rehype-raw.
+ * @returns A plugin to parse html stuff in markdown.
  */
-//export const examplePlugin = (): Plugin => ({
-//	remarkPlugin: [(e) => {
-//		console.log("HI!", e)
-//	}],
-//	rehypePlugin: [(e) => {
-//		console.log("HO", e)
-//	}]
-//});
+export const rawPlugin = (
+	options: Parameters<typeof rehypeRaw>[0] = {}
+): Plugin => ({
+	//remarkPlugin: [remarkMath, options],
+	rehypePlugin: [rehypeRaw, options],
+});
 
 // ============================================================================
 
 /** A list of plugins to parse markdown. */
-export default [gfmPlugin()] as Plugin[];
+export default [gfmPlugin(), rawPlugin({})] as Plugin[];

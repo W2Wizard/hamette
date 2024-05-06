@@ -78,10 +78,17 @@
 			<input class="wui" type="date" name="born-on" id="born-on" required />
 		</label>
 
-		<label for="email">
+		<label for="died-on">
 			Died on
-			<input class="wui" type="date" name="died-on" id="died-on" />
+			<input class="wui" type="date" name="died-on" id="died-on" max={Date.now().toString()} />
 		</label>
+
+		<label for="gender">
+			Gender<sub>*</sub>
+			<select class="wui">
+				<option value="Male">Male</option>
+				<option value="Female">Female</option>
+			</select>
 	</div>
 
 	<label for="notes">Notes</label>
