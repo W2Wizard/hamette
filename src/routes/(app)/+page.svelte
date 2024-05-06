@@ -2,21 +2,36 @@
 	import "@xyflow/svelte/dist/style.css";
 	import Graph from "$lib/components/graph.svelte";
 	import IconSpinner from "$lib/icons/icon-spinner.svelte";
-
+	import { type Family } from "$lib/types.js";
+	import { familiyStore } from "$lib/people.svelte.js";
+	//import { invalidate } from "$app/navigation";
+	import { apiFetch } from "$lib/utils.js";
 	const { data } = $props();
+
+	let count = $state(0);
+	function getFamily(id: number) {
+		return apiFetch<Family>(`/api/person?id=${id}`);
+	}
 </script>
 
-{#await data.streamed.one}
+<!--<button onclick={async () => {
+	count++;
+	const data = await getFamily(count);
+	familiyStore.update((old) => { old.push(data); return old; });
+}}>Fetch</button>-->
+
+{#await data.person}
 	<div class="graph">
 		<div class="loading">
 			<IconSpinner size={32} />
 		</div>
 	</div>
-{:then value}
+{:then value: Family}
 	{#if !value}
 		<p>No data</p>
 	{:else}
-		<Graph people={[value]} />
+		{familiyStore.update((old) => { old.push(value); return old; })}
+		<Graph />
 	{/if}
 {:catch error}
 	<p style="color: red">{error.message}</p>

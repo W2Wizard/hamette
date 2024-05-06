@@ -1,6 +1,6 @@
 import type { Marriage, Person } from "@prisma/client";
 
-export interface GETPerson {
+export interface Family {
 	person: Person;
 	spouses: {
 		marriage: Marriage;

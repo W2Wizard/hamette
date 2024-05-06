@@ -4,7 +4,7 @@
 // ============================================================================
 
 import { browser } from "$app/environment";
-import { fail as kitFail } from "@sveltejs/kit";
+import { error, fail as kitFail } from "@sveltejs/kit";
 import { writable, type Updater } from "svelte/store";
 import { getContext, setContext } from "svelte";
 
@@ -63,14 +63,18 @@ export async function useFileReader(file: File) {
 	});
 }
 
-export async function apiFetch<T = unknown>(route: string, init: RequestInit & { fetch: typeof fetch }) {
-	const response = await init.fetch(route, {
+export async function apiFetch<T = unknown>(
+	route: string,
+	init?: RequestInit & { fetch?: typeof fetch },
+) {
+	const fetchy = init?.fetch ?? fetch;
+	const response = await fetchy(route, {
 		signal: AbortSignal.timeout(1000),
 		...init,
 	});
 
 	if (!response.ok) {
-		throw new Error(response.statusText);
+		error(response.status, response.statusText);
 	}
 
 	return (await response.json()) as T;
