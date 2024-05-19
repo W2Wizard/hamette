@@ -1,10 +1,17 @@
 <script lang="ts">
 	import MarkdownEditor from "$lib/markdown/markdown-editor.svelte";
 	import toast from "sonner-svelte";
-	import Form from "./form.svelte";
 	import { useFileReader } from "$lib/utils";
+	import type { Person } from "@prisma/client";
 
+	const { initial }: { initial?: Person } = $props();
 	let ppimg: HTMLImageElement;
+
+	$effect(() => {
+		if (initial?.picture) {
+			ppimg.src = initial.picture;
+		}
+	});
 
 	/**
 	 * Handle image preview for adding a new person
@@ -33,7 +40,7 @@
 	}
 </script>
 
-<Form method="post" action="/person">
+<div>
 	<div class="center" style="gap: 8px;">
 		<div class="prof center">
 			<img
@@ -45,6 +52,7 @@
 			/>
 			<input
 				type="file"
+				name="picture"
 				title="Upload a profile picture (max 5MB, png, gif, jpeg)"
 				accept="image/png, image/gif, image/jpeg"
 				onchange={handleImagePreview}
@@ -52,63 +60,99 @@
 		</div>
 
 		<div class="group">
-			<label for="first-name">
+			<label for="first-name" title="The first name of the person">
 				First Name<sub>*</sub>
 				<input
 					class="wui"
 					type="text"
 					name="first-name"
 					id="first-name"
+					title="Please enter a valid name"
+					value={initial?.first_name ?? ""}
 					required
 				/>
 			</label>
 
-			<label for="middle-name">
+			<label for="middle-name" title="The middle name of the person">
 				Middle Name
-				<input class="wui" type="text" name="middle-name" id="middle-name" />
+				<input
+					class="wui"
+					type="text"
+					name="middle-name"
+					id="middle-name"
+					value={initial?.middle_name ?? ""}
+					title="Please enter a valid name"
+				/>
 			</label>
 
-			<label for="last-name">
+			<label for="last-name" title="The last name of the person">
 				Last Name<sub>*</sub>
 				<input
 					class="wui"
 					type="text"
 					name="last-name"
 					id="last-name"
+					value={initial?.last_name ?? ""}
+					title="Please enter a valid name"
 					required
 				/>
 			</label>
 
-			<label for="gender">
+			<label for="gender" title="The gender of the person">
 				Gender<sub>*</sub>
-				<select id="gender" name="gender" class="wui">
-					<option value="Male">Male</option>
-					<option value="Female">Female</option>
+				<select
+					required
+					id="gender"
+					name="gender"
+					class="wui"
+					value={initial?.male ? "male" : "female" ?? "male"}
+				>
+					<option value="male">Male</option>
+					<option value="female">Female</option>
 				</select>
 			</label>
 
-			<label for="born-on">
+			<label for="birth-date" title="The date of birth">
 				Born on<sub>*</sub>
-				<input class="wui" type="date" name="born-on" id="born-on" required />
+				<input
+					class="wui"
+					type="date"
+					name="birth-date"
+					id="birth-date"
+					value={initial?.born_at}
+					required
+				/>
 			</label>
 
-			<label for="died-on">
+			<label for="death-date" title="Leave empty if still alive">
 				Died on
 				<input
 					class="wui"
 					type="date"
-					name="died-on"
-					id="died-on"
-					max={Date.now().toString()}
+					name="death-date"
+					id="death-date"
+					value={initial?.died_at}
 				/>
 			</label>
 
-			<label for="occupation">
+			<label
+				for="occupation"
+				title="The current / last occupation of the person"
+			>
 				Occupation
-				<input class="wui" type="text" name="occupation" id="occupation" />
+				<input
+					class="wui"
+					type="text"
+					name="occupation"
+					id="occupation"
+					value={initial?.occupation ?? ""}
+				/>
 			</label>
 
-			<label for="birth-place">
+			<label
+				for="birth-place"
+				title="The place of birth (url to openstreetmap)"
+			>
 				Birth Place
 				<input
 					class="wui"
@@ -118,22 +162,21 @@
 					pattern="https://.*"
 					title="Please enter a valid URL, e.g: OpenStreetMap URL"
 					placeholder="https://www.openstreetmap.org/#map=16/52.4809/4.9723&layers=N"
+					value={initial?.birthplace ?? ""}
 				/>
 			</label>
 		</div>
 	</div>
 
 	<hr />
-	<label for="notes">Notes</label>
-	<MarkdownEditor class="wui" name="notes" id="notes" />
-	<button
-		class="wui button"
-		type="submit"
-		style="width: 100%; justify-content: center;"
-	>
-		Add
-	</button>
-</Form>
+	<label for="biography" title="The biography of the person">Biography</label>
+	<MarkdownEditor
+		class="wui"
+		name="biography"
+		id="biography"
+		value={initial?.bio ?? ""}
+	/>
+</div>
 
 <style>
 	div.prof {

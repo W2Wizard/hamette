@@ -10,7 +10,7 @@
 		onResult?: (result: ActionResult) => void;
 	}
 
-	let { isLoading, onLoading, onResult, ...rest }: Props = $props();
+	let { isLoading, onLoading, onResult, children, ...rest }: Props = $props();
 
 	export const onSubmit: SubmitFunction = () => {
 		onLoading?.((isLoading = true));
@@ -32,8 +32,10 @@
 	};
 </script>
 
-<form enctype="multipart/form-data" {...rest} use:enhance={onSubmit}>
-	<slot />
+<form method="post" enctype="multipart/form-data" {...rest} use:enhance={onSubmit}>
+	{#if children}
+		{@render children()}
+	{/if}
 </form>
 
 <style>

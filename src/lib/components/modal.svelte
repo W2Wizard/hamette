@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Icon, XMark } from "svelte-hero-icons";
 	import type { HTMLFormAttributes } from "svelte/elements";
+	import Form from "./form.svelte";
 
 	let modal: HTMLDialogElement;
 
@@ -13,7 +14,7 @@
 </script>
 
 <dialog bind:this={modal}>
-	<form {...rest}>
+	<Form method="post" {...rest}>
 		<div>
 			<!--<h1>{$$props.title}</h1>-->
             <h1>{title}</h1>
@@ -27,7 +28,7 @@
         {#if children}
             {@render children()}
         {/if}
-	</form>
+	</Form>
 </dialog>
 
 <style>
@@ -72,6 +73,7 @@
 		border-radius: var(--wui-radius);
 		padding: 15px;
     width: 42rem;
+		min-height: 50dvh;
 
 		&[open] {
 			animation: slidein 0.35s ease-in-out;
