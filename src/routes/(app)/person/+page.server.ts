@@ -1,7 +1,9 @@
 import { db } from "$lib/server/auth";
 import { ToastForm } from "$lib/utils";
+import type { Person } from "@prisma/client";
 import type { Actions } from "./$types";
 import { DateTime } from "luxon";
+import { generateId } from "lucia";
 
 /*
 model Person {
@@ -44,7 +46,7 @@ const NAME_REGEX = /^[a-zA-Z\s]+$/;
 export const actions: Actions = {
 	default: async (event) => {
 		const formData = await event.request.formData();
-		const file = formData.get("picture") as File | null;
+		const pic = formData.get("picture") as File | null;
 		const firstName = formData.get("first-name")?.toString();
 		const lastName = formData.get("last-name")?.toString();
 		const middleName = formData.get("middle-name")?.toString();
@@ -99,11 +101,56 @@ export const actions: Actions = {
 				male,
 				birthplace,
 				occupation,
-				bio
-			) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+				bio,
+				picture
+			) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
 			RETURNING *;
 		`);
 
-		return ToastForm.success(age.toString());
+		try {
+			let picExt = "png";
+			switch (pic?.type) {
+				case "image/png":
+					picExt = "png";
+					break;
+				case "image/jpg":
+				case "image/jpeg":
+					picExt = "jpg";
+					break;
+				case "image/gif":
+					picExt = "gif";
+					break;
+				default:
+					return ToastForm.fail(400, "Invalid image format.");
+			}
+
+			const id = generateId(8);
+			const filename= `${id}.${picExt}`
+			const urlPath = `/people/${filename}`;
+			const path = `./static/people/${filename}`;
+			await Bun.write(path, (await pic?.arrayBuffer()) ?? new ArrayBuffer(0), {
+				createPath: true,
+			});
+
+			const person = query.get(
+				firstName,
+				lastName,
+				middleName ?? null,
+				birthDate.toISO(),
+				deathDate?.toISO() ?? null,
+				age,
+				male,
+				birthPlace ?? null,
+				occupation ?? null,
+				biography ?? null,
+				urlPath,
+			) as Person | null;
+
+			return ToastForm.success(
+				`Created person: ${person?.first_name} ${person?.last_name}`,
+			);
+		} catch (error) {
+			return ToastForm.fail(400, "Failed to create person: " + error.message);
+		}
 	},
 };

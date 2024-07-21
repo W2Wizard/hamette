@@ -1,9 +1,9 @@
 <script lang="ts">
-	import { focusedFamilyStore } from '$lib/people.svelte';
-	import type { Family } from "../types";
+	//import { focusedFamilyStore } from '$lib/people.svelte';
+	//import type { Family } from "../types";
 
-	let family = $state<Family | null>(null);
-	focusedFamilyStore.subscribe((value) => family = value);
+	//let family = $state<Family | null>(null);
+	//focusedFamilyStore.subscribe((value) => family = value);
 </script>
 
 

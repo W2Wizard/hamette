@@ -1,10 +1,11 @@
 import type { Marriage, Person } from "@prisma/client";
 
-export interface Family {
+export interface Relation {
+	marriage: Marriage;
+	children: number[];
+}
+
+export interface Entry {
 	person: Person;
-	spouses: {
-		marriage: Marriage;
-		person: Person | null;
-		children: Person[];
-	}[];
+	marriages: Relation[];
 }

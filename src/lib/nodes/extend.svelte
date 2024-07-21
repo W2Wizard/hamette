@@ -1,17 +1,21 @@
 <script lang="ts">
-    import type { Writable } from 'svelte/store';
     import { Handle, Position, type NodeProps } from '@xyflow/svelte';
-  
+	import { Icon, Plus } from 'svelte-hero-icons';
+	import Form from '$lib/components/form.svelte';
+
     interface Props extends NodeProps {
-        color: Writable<string>;
+			personID: string;
     }
 
-    const { color }: Props = $props();
+    const { personID }: Props = $props();
   </script>
-  
-  <div class="colorpicker">
-    <Handle type="target" position={Position.Left} />
-    <div>
+
+  <Form method="post" action="/?person={personID}">
+    <Handle type="target" position={Position.Top} />
+		<button type="submit" class="wui button">
+			<Icon src={Plus} size="16px"/>
+		</button>
+    <!--<div>
       color: <strong>{$color}</strong>
     </div>
     <input
@@ -19,15 +23,10 @@
       type="color"
       oninput={(evt) => color.set(evt.currentTarget?.value)}
       value={$color}
-    />
-    <Handle type="source" position={Position.Right} />
-  </div>
-  
+    />-->
+    <!--<Handle type="source" position={Position.Right} />-->
+  </Form>
+
   <style>
-    .colorpicker {
-      padding: 1rem;
-      background: #eee;
-      border-radius: 0.125rem;
-      font-size: 0.7rem;
-    }
+
   </style>

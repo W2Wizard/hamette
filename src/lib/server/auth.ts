@@ -23,6 +23,10 @@ const adapter = new BunSQLiteAdapter(db, {
 	session: "session",
 });
 
+export const sqlPerson = db.query("SELECT * FROM person WHERE id = ?");
+export const sqlChildren = db.query("SELECT id FROM person WHERE marriage_id = ?");
+export const sqlMarriages = db.query("SELECT * FROM marriages WHERE husband_id = ? OR wife_id = ?");
+
 /** The main instance of Lucia. */
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {

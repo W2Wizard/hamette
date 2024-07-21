@@ -20,9 +20,9 @@
 	<hr />
 	<nav style="flex: 1;">
 		<ul>
-			<!--<li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/contact">Contact</a></li>-->
+			<li><a href="/">Home</a></li>
+			<li><a href="/people">People</a></li>
+			<!--<li><a href="/contact">Contact</a></li>-->
 		</ul>
 	</nav>
 
@@ -43,6 +43,24 @@
 		align-items: center;
 	}
 
+	li {
+		list-style: none;
+		padding: 0.5rem 0;
+		border: 1px solid var(--wui-border);
+
+		&:hover {
+			background-color: var(--wui-shade-02);
+
+			&::before {
+				content: '';
+				border-left: 2px solid var(--wui-primary);
+				height: 100%;
+
+
+				/*margin-right: 0.5rem;*/
+			}
+		}
+	}
 	dialog {
 		top: 0;
 		left: 0;
@@ -79,16 +97,6 @@
 
 				display: inline-flex;
 				align-items: center;
-			}
-
-			& ul {
-				padding: 0;
-			}
-
-			& li {
-				display: inline-block;
-				margin-right: 0.5rem;
-				font-size: 0.95rem;
 			}
 		}
 

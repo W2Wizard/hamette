@@ -13,39 +13,12 @@
 	} from "@xyflow/svelte";
 	import "@xyflow/svelte/dist/style.css";
 	import { writable } from "svelte/store";
+	import Extend from "$lib/nodes/extend.svelte";
 
 	const { ...rest } = $props();
 	const edges = writable<SvelteFlowEdge[]>([]);
 	const nodes = writable<SvelteFlowNode[]>([]);
 
-	function addNode(data: PersonType, position?: XYPosition) {
-		nodes.update((old) => [
-			...old,
-			{
-				id: data.id.toString(),
-				type: "person",
-				data: { person: data },
-				position: position ?? { x: 0, y: 0 },
-			},
-		]);
-	}
-
-	function addEdge(
-		source: string,
-		target: string,
-		type?: "relation" | "offspring",
-	) {
-		edges.update((old) => [
-			...old,
-			{
-				id: `${source}-${target}-edge`,
-				source,
-				target,
-				targetHandle: type,
-				type: "smoothstep",
-			},
-		]);
-	}
 
 	familiyStore.subscribe((families) => {
 		// A family consists of a person and their spouses with their children
@@ -56,31 +29,35 @@
 		// Value consists of all the loaded families so far including ones we already loaded
 		families.forEach((family, i) => {
 			const head = family.person;
-			const headID = head.id.toString();
 			const position = { x: i * 200, y: i * 200 };
-			let k = 0;
 
-			addNode(head, position)
-
-			family.spouses.forEach((spouse, j) => {
-				const person = spouse.person!;
-				const spouseID = person.id.toString();
-				const position2 = { x: position.x + j * 300 + 300, y: position.y };
-				addNode(person, position2);
-				addEdge(headID, spouseID, "relation");
-
-				spouse.children.forEach((child) => {
-					addNode(child, { x: position2.x + k * 150, y: position.y + 120 });
-					addEdge(headID, child.id.toString());
-					addEdge(spouseID, child.id.toString());
-					k++;
-				});
+			$nodes.push({
+				id: head.id.toString(),
+				type: "person",
+				position,
+				data: { person: head },
 			});
+
+			$nodes.push({
+				id: `extend-${head.id}`,
+				type: "extend",
+				position: { x: position.x + 118, y: position.y + 100 },
+				data: { personID: head.id.toString() },
+			});
+
+			$edges.push({
+				id: `edge-${head.id}`,
+				source: head.id.toString(),
+				target: `extend-${head.id}`,
+			});
+
+			//addNode(`22`, undefined, { x: position.x + 100, y: position.y + 100 }, "extend");
 		});
 	});
 
 	const nodeTypes = {
 		person: Person,
+		extend: Extend,
 	};
 </script>
 
@@ -94,6 +71,7 @@
 	{edges}
 	{nodeTypes}
 	fitView
+	snapGrid={[3, 3]}
 	nodesDraggable={true}
 	{...rest}
 >

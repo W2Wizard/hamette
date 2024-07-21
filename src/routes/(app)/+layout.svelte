@@ -4,7 +4,7 @@
   import EditRelationship from "$lib/components/person-relationships.svelte";
 	import Overlay from "$lib/components/overlay.svelte";
 	import Tab from "$lib/components/tab.svelte";
-  import { ArrowRightStartOnRectangle, Bars3, Icon, PencilSquare, Plus, UserPlus,  } from "svelte-hero-icons";
+  import { ArrowRightStartOnRectangle, Bars3, Icon, Plus  } from "svelte-hero-icons";
 
 	const { children } = $props();
   let modal: Modal;
@@ -48,7 +48,7 @@
           <Icon src={Bars3} solid size="20px" />
         </button>
       </li>
-      <li>
+      <!--<li>
         <button class="wui button" onclick={() => modal.toggle()}>
           <Icon src={UserPlus} solid size="20px" />
         </button>
@@ -57,7 +57,7 @@
 				<button class="wui button" onclick={() => modalEdit.toggle()}>
 					<Icon src={PencilSquare} solid size="20px" />
 				</button>
-			</li>
+			</li>-->
     </menu>
 		<form method="post" action="/auth/logout">
 			<button class="wui button" type="submit">
